@@ -1,0 +1,45 @@
+.giphy-1-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1728px;
+  height: 1117px;
+  object-fit: cover;
+}
+
+.hangman-game {
+  position: absolute;
+  top: 141px;
+  left: 174px;
+  display: inline-block;
+  width: 768px;
+  height: 102px;
+}
+.press-here-to {
+  position: absolute;
+  top: 347px;
+  font-size: 64px;
+  color: #d51717;
+  width: 551px;
+  height: 76px;
+  cursor: pointer;
+}
+.capture-decran-2023-11-21-a {
+  position: absolute;
+  top: 0;
+  left: 1609px;
+  width: 119px;
+  height: 242px;
+  object-fit: cover;
+}
+.macbook-pro-16-1 {
+  position: relative;
+  background-color: var(--color-white);
+  width: 100%;
+  height: 1117px;
+  overflow: hidden;
+  text-align: left;
+  font-size: 96px;
+  color: #000;
+  font-family: var(--font-inter);
+}

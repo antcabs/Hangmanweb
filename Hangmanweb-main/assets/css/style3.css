@@ -1,0 +1,59 @@
+.giphy-2-1-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1728px;
+  height: 1118px;
+  object-fit: cover;
+}
+.a-word-is {
+  margin-bottom: 0;
+}
+.a-word-is-given-when-you-start {
+  margin: 0;
+  padding-left: var(--padding-34xl);
+}
+.blank-line {
+  margin: 0;
+}
+.a-word-is-container {
+  top: 282px;
+  left: 109px;
+  font-family: var(--font-inherit);
+  width: 1286px;
+  height: 771px;
+}
+.a-word-is-container,
+.return-to-the,
+.the-rules2 {
+  position: absolute;
+  display: inline-block;
+}
+.the-rules2 {
+  top: 70px;
+  left: 504px;
+  font-size: var(--font-size-109xl);
+  color: #dea9a9;
+  width: 1022px;
+  height: 157px;
+}
+.return-to-the {
+  top: 956px;
+  left: 1318px;
+  font-size: 32px;
+  color: #fd0505;
+  width: 314px;
+  height: 39px;
+  cursor: pointer;
+}
+.giphy-2-1-parent {
+  position: relative;
+  background-color: var(--color-white);
+  width: 100%;
+  height: 1117px;
+  overflow: hidden;
+  text-align: left;
+  font-size: var(--font-inherit);
+  color: red;
+  font-family: var(--font-inter);
+}

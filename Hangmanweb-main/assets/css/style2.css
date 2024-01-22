@@ -1,0 +1,40 @@
+.giphy-1-1-icon {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 1728px;
+  height: 1117px;
+  object-fit: cover;
+}
+.new-game {
+  position: absolute;
+  top: 284px;
+  left: 536px;
+  display: inline-block;
+  width: 906px;
+  height: 168px;
+}
+.the-rules2 {
+  margin: 0;
+}
+.the-rules1 {
+  position: absolute;
+  top: 577px;
+  left: 566px;
+  color: var(--color-white);
+  display: inline-block;
+  width: 656px;
+  height: 152px;
+  cursor: pointer;
+}
+.macbook-pro-16-2 {
+  position: relative;
+  background-color: var(--color-white);
+  width: 100%;
+  height: 1117px;
+  overflow: hidden;
+  text-align: left;
+  font-size: var(--font-size-109xl);
+  color: #a90909;
+  font-family: var(--font-inter);
+}
