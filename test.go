@@ -23,11 +23,17 @@ func rulesHandler(w http.ResponseWriter, r *http.Request){
 	tmpl.ExecuteTemplate(w, "template3.html",nil)
 }
 
+func gamehandler(w http.ResponseWriter, r *http.Request){
+	tmpl.ExecuteTemplate(w, "template4.html",nil)
+}
+
+
 func main() {
 	fs:=http.FileServer(http.Dir("assets"))
 	http.Handle("/assets/",http.StripPrefix("/assets", fs))
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/template2.html", selectionHandler)
 	http.HandleFunc("/template3.html", rulesHandler)
+	http.HandleFunc("/template4.html", gamehandler)
 	http.ListenAndServe(":9999", nil)
 }
