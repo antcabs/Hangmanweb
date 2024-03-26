@@ -1,370 +1,177 @@
 <!DOCTYPE html>
-
-<html lang="fr">
-
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THE ORDER</title>
-  <link href="https://db.onlinewebfonts.com/c/4c19fc875e7ba1e6831129de3ab5ac0b?family=Retro+Gaming" rel="stylesheet">
-  <link href="style2.css" type="text/css" rel="stylesheet">
+<title>Simple Hangman</title>
+
+<script type="text/javascript">
+var can_play = true;
+var words = new Array("SOURCECODESTER", "ARTICLE", "BLOG", "TUTORIALS", "PROGRAMMING", "CODES");
+
+var to_guess = "";
+var display_word = "";
+var used_letters = "";
+var wrong_guesses = 0;
+
+function selectLetter(l)
+{
+if (can_play == false)
+{
+return;
+}
+
+if (used_letters.indexOf(l) != -1)
+{
+return;
+}
+	
+used_letters += l;
+document.game.usedLetters.value = used_letters;
+	
+if (to_guess.indexOf(l) != -1)
+{
+ // correct letter guess
+pos = 0;
+temp_mask = display_word;
+
+while (to_guess.indexOf(l, pos) != -1)
+{
+pos = to_guess.indexOf(l, pos);			
+end = pos + 1;
+
+start_text = temp_mask.substring(0, pos);
+end_text = temp_mask.substring(end, temp_mask.length);
+
+temp_mask = start_text + l + end_text;
+pos = end;
+}
+
+display_word = temp_mask;
+document.game.displayWord.value = display_word;
+		
+if (display_word.indexOf("#") == -1)
+{
+// won
+alert("Well done, you have won!");
+can_play = false;
+}
+}
+else
+{
+// incortect letter guess
+wrong_guesses += 1;
+eval("document.hm.src=\"hm" + wrong_guesses + ".gif\"");
+		
+if (wrong_guesses == 10)
+{
+// lost
+alert("Sorry, you have lost!");
+can_play = false;
+}
+}
+}
+
+function reset()
+{
+selectWord();
+document.game.usedLetters.value = "";
+used_letters = "";
+wrong_guesses = 0;
+document.hm.src="hmstart.gif";
+}
+
+function selectWord()
+{
+can_play = true;
+random_number = Math.round(Math.random() * (words.length - 1));
+to_guess = words[random_number];
+//document.game.theWord.value = to_guess;
+	
+// display masked word
+masked_word = createMask(to_guess);
+document.game.displayWord.value = masked_word;
+display_word = masked_word;
+}
+
+function createMask(m)
+{
+mask = "";
+word_lenght = m.length;
+
+for (i = 0; i < word_lenght; i ++)
+{
+mask += "#";
+}
+return mask;
+}
+</script>
 
 </head>
-<style>
-      body {
-        background: black;
-        display:flex;
-        align-items: center;
-        min-height: 100vh;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  overflow:hidden;
-}
-  .instruction {
-    font-size: 25px;
-    color: 	white;
-    font-family: "Retro Gaming";
-    display:inline-block;
-	  animation-fill-mode: forwards;
-    position: absolute;
-    top: -20px;
-    left: 420px;
-    padding: 24px 32px;
-    width: 1000px;
-    height: 45px;
-    text-align: center;
-    display: inline-block;
-    border-radius: 15px;
-    background-color: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(30px);
-    
-    font-size: 25px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    
-    background-color: black;
-}
-.container{
-  background-color:gray;
-  background-size: cover;
-  gap:70px;
-  font-family: "Retro Gaming";
-  width: 2000px;
-  border-radius: 15px;
-  right: auto;
-  height: 400px;
-  padding: 60px,40px;
-}
-.word-display{
-  margin-bottom: -20px;
-  justify-content: center;
-  display:flex;
-  gap:10px;
-  list-style:none;
-  align-items: center;
-}
-.word-display .letter{
-  justify-content: center;
-  text-transform: uppercase;
-  width: 28px;
-  border-bottom: 3px solid black;
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 0px;
-}
-.word-display .letter-guessed{
-  text-transform: uppercase;
-  border-color: transparent;
-  margin-bottom: 0px;
-  font-size: 1.5rem;
-}
-.game-box .keyboard {
-  display: flex ;
-  gap: 5px;
-  flex-wrap: wrap;
-  justify-content: center;
 
-}
+<body onLoad="reset(); return true;">
 
-  
+<center>
+<h2>Simple Hangman</h2>
 
-.keyboard button {
-  font-family: "Retro Gaming";
-	background: gray;
-	border-bottom: 6px inset rgba(0,0,0,.5);
-	border-left: 6px inset rgba(0,0,0,.5);
-	border-right: 6px inset rgba(255,255,255,.5);
-	border-top: 6px inset rgba(255,255,255,.5);
-	box-sizing: border-box;
-	color: black;
-	cursor: pointer;
-	display: inline-block;
-	font-size: 1.5rem;
-	margin: 0.2rem;
-	
-	padding: .5rem;
-	text-transform: uppercase;
-	
-  width: calc(75% / 9 - 5px);
+<p>
+	<img src="hmstart.gif" height="125" width="75" name="hm">
+</p>
 
+<form name="game">
+	<p style="font-weight:bold; font-size:18px;">
+		Display Word: &nbsp;&nbsp;&nbsp;<input type="text" style="cursor:no-drop; width:200px; font-size:18px;" name="displayWord" disabled />
+		<br />
+		<br />
+		Used Letters: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" style="cursor:no-drop; width:200px; font-size:18px;" name="usedLetters" disabled />
+	</p>
+</form>
 
-}
-.keyboard button:hover{
-  background: red;
-}
-.keyboard button[disabled]{
-    opacity: 0.4;
-    pointer-events: none;
-}
+<p style="font-weight:bold; font-size:18px;">
 
-.game-box h4{
-  text-align: center;
-  font-weight: 500;
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-}
-.game-box h4 b{
-  font-weight: 600;
-}
-.game-box .guesses-text b {
-  color: #f00;
-}
+<label>Choose a letter:</label>
 
-.game-box .hint-text {
-  margin-bottom: 30px;
-}
-.game-modal {
-  font-family: "Retro Gaming";
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background: rgba(0,0,0,0.6);
-  opacity: 0;
-  z-index: 999;
-  pointer-events: none;
-}
-.game-modal .content {
-  background:gray;
-  max-width: 420px;
-  width: 100%;
-  text-align: center;
-  border-radius: 10px;
-  padding: 30px;
-}
-.game-modal h4 {
-  font-size: 1.5rem;
+<br />
+<br />
 
-}
-.game-modal p {
-  font-size: 1.15rem;
-  margin: 15px 0 30px;
-  font-weight: 500;
-}
+<a href="javascript:selectLetter('Q');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="Q"></a>
+<a href="javascript:selectLetter('W');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="W"></a>
+<a href="javascript:selectLetter('E');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="E"></a>
+<a href="javascript:selectLetter('R');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="R"></a>
+<a href="javascript:selectLetter('T');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="T"></a>
+<a href="javascript:selectLetter('Y');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="Y"></a>
+<a href="javascript:selectLetter('U');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="U"></a>
+<a href="javascript:selectLetter('I');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="I"></a>
+<a href="javascript:selectLetter('O');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="O"></a>
+<a href="javascript:selectLetter('P');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="P"></a>
+<br />
+<br />
+<a href="javascript:selectLetter('A');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="A"></a>
+<a href="javascript:selectLetter('S');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="S"></a>
+<a href="javascript:selectLetter('D');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="D"></a>
+<a href="javascript:selectLetter('F');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="F"></a>
+<a href="javascript:selectLetter('G');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="G"></a>
+<a href="javascript:selectLetter('H');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="H"></a>
+<a href="javascript:selectLetter('J');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="J"></a>
+<a href="javascript:selectLetter('K');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="K"></a>
+<a href="javascript:selectLetter('L');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="L"></a>
+<br />
+<br />
+<a href="javascript:selectLetter('Z');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="Z"></a>
+<a href="javascript:selectLetter('X');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="X"></a>
+<a href="javascript:selectLetter('C');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="C"></a>
+<a href="javascript:selectLetter('V');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="V"></a>
+<a href="javascript:selectLetter('B');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="B"></a>
+<a href="javascript:selectLetter('N');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="N"></a>
+<a href="javascript:selectLetter('M');"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="M"></a>
 
-.game-modal p b {
-  color: #f00;
-  font-weight: 600;
-}
-.game-modal button {
-  font-family: "Retro Gaming";
-	background: gray;
-	border-bottom: 6px inset rgba(0,0,0,.5);
-	border-left: 6px inset rgba(0,0,0,.5);
-	border-right: 6px inset rgba(255,255,255,.5);
-	border-top: 6px inset rgba(255,255,255,.5);
-	box-sizing: border-box;
-	color: black;
-	cursor: pointer;
-	display: inline-block;
-	font-size: 1rem;
-	margin: 0.2rem;
-	text-transform: uppercase;
-  width: 210px;
-  height: 50px;
-}
-.game-modal.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-.game-modal button:hover{
-  background: red;
-}
-    
-</style>
+</p>
 
-<body>
-  <audio id="music" src="/templates_HTML/darkintro2.mp3" autoplay loop></audio>
+<br />
 
-  <h1 class="instruction" >You are now inside the mind of the robot ...You need to find the password to gain control...</h1> 
-  <div class ="game-modal">
-    <div class ="content">
-       <h4>You failed to take control</h4>
-       <p>The password was: <b>admin</b></p>
-       <button class="play-again" onclick="window.location.href = 'http://localhost:8080/firsthangman';">Use power again ?</button>
-    </div>
-  </div>
-  <div class="container">
-  <div class ="game-box">
-    <ul class ="word-display">
-     
-    </ul>
-    <h4 class="hint-text">
-      Tips:<br> 
-    The robot is weakened so the password that you are searching , is a simple password.<br> Ps: since it's a weakened robot you can retry if you failed 
-    </h4>
-    <h4 class="guesses-text">
-      Incorrect guesses:
-      <b>0/6</b>
-    </h4>
-    <div class ="keyboard">
-    </div>
-    </div>
-  </div>
-  
+<p>
+<a href="javascript:reset()"><input type="button" style="cursor:pointer; margin-left: 10px; font-size:18px;" value="Start game / Reset game"></a>
+</p>
+</center>
 
-  <script>
-     const playButtonEl = document.querySelector("#play");
-          const audioEl = document.querySelector("#music");
-        
-  
-          document.addEventListener("DOMContentLoaded", () => {
-            audioEl.volume = 0.5; // change volume auto
-  
-            setTimeout(() => {  // play after 1000 ms home.page.html:44 Uncaught (in promise) DOMException: play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD
-              audioEl.play();
-              isPlaying = true;
-            }, 1000);
-          });
-  
-          "use strict";
-    window.addEventListener("DOMContentLoaded", (event) => {
-  animate_text();
-});
-// -------------------
-                                                                                                                                                                                                                                                               
-function animate_text() 
-{
-  let delay = 50,
-      delay_start = 0,
-      contents,
-      letters;
-
-  document.querySelectorAll(".instruction").forEach(function (elem) {
-    contents = elem.textContent.trim();
-    elem.textContent = "";
-    letters = contents.split("");
-    elem.style.visibility = 'visible';
-
-    letters.forEach(function (letter, index_1) {
-      setTimeout(function () {
-        elem.textContent += letter;
-      }, delay_start + delay * index_1);
-    });    
-    delay_start += delay * letters.length;
-  });
-}
-
-
-
-
-
-
-
-
-
-
-const keyboardiv = document.querySelector(".keyboard");
-const worddisplay = document.querySelector(".word-display");
-const guessesText = document.querySelector(".guesses-text b");
-
-const maxguesses =6;
-const gameModal = document.querySelector(".game-modal") 
-let wronguessescount =0;
-let correctLetters = [];
-
-
-const wordLIST = [
-    { word: 'admin' },
-    { word: 'password' },
-    { word: 'theorder' },
-    { word: 'robot'},
-    { word: 'letmein'},
-];
-//displaying a random word 
-function getRandom() {
-    const random = Math.floor(Math.random() * wordLIST.length);
-    return wordLIST[random].word;
-}
-
-// Exemple d'utilisation
-const randomword = getRandom();
-worddisplay.innerHTML = randomword.split("").map(() => '<li class ="letter"></li>').join("");
-console.log(randomword);
-
-
-const GameOver = (isVictory) => {
-    setTimeout(() => {
-        const modalText = isVictory ? `You found the password` : `The correct password was`;
-        gameModal.querySelector("h4").innerText = `${isVictory ? `The robot is now under you control` : 'You failed to take control'}`
-        gameModal.querySelector("p").innerHTML = `${modalText} <b>${randomword} </b> `;
-        gameModal.querySelector("button").innerText = `${isVictory ? `Disconnect yourself` : 'Use power again ?'}`
-
-        // Ajoutez un gestionnaire d'événements au bouton
-        gameModal.querySelector("button").addEventListener("click", function() {
-            // Déterminez le lien en fonction de la condition de victoire
-            const redirectLink = isVictory ? "http://localhost:8080/endfirsthangman" : "http://localhost:8080/firsthangman";
-
-            // Redirigez l'utilisateur vers le lien approprié
-            window.location.href = redirectLink;
-        });
-
-        gameModal.classList.add("show");
-    }, 300);
-}
-
-
-
-
-const initGame = (button,clickedletter) => {
-  //check if the letter is in the word
-  if(randomword.includes(clickedletter)) {
-    //showing all correct letter in the word
-    [...randomword].forEach((letter,index) => {
-      if(letter === clickedletter) {
-        correctLetters.push(letter);
-        worddisplay.querySelectorAll("li")[index].innerText = letter;
-        worddisplay.querySelectorAll("li")[index].classList.add("letter-guessed");
-      }
-    })
-  } else {
-    wronguessescount++;
-  }
-  button.disabled = true;
-  guessesText.innerText = `${wronguessescount} / ${maxguesses}`;
-  //Win or loose verification//
-  if(wronguessescount === maxguesses) return GameOver(false);
-  if(correctLetters.length === randomword.length) return GameOver(true);
-
-
-}
-
-//creating keyboard button and adding event listener
-for(let i = 97;i <=122;i++){
-  const button = document.createElement("button");
-  button.innerText = String.fromCharCode(i);
-  keyboardiv.appendChild(button);
-  button.addEventListener("click", e => initGame(e.target,String.fromCharCode(i)));
-}
-
-
-  </script>
 </body>
 </html>
+
